@@ -72,7 +72,7 @@ int main() {
 
 	 while (1) {
         // Receive data from the client
-        ssize_t bytes_received = recv(client_socket, buffer, sizeof(buffer), 0);
+        ssize_t bytes_received = recv(client_fd], buffer, sizeof(buffer), 0);
         
         if (bytes_received <= 0) {
             // Handle error or client disconnection
@@ -93,7 +93,7 @@ int main() {
 	 if (respond_client(client_fd) < 0) {
 		printf("Unable to respond to client properly \n");
 	 }
-	close(client_socket);
+	
 	close(server_fd);
 
 	return 0;
