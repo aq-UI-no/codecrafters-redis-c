@@ -63,16 +63,37 @@ int main() {
 	
 	 printf("Waiting for a client to connect...\n");
 	 client_addr_len = sizeof(client_addr);
-	
-	 accept(server_fd, (struct sockaddr *) &client_addr, &client_addr_len);
-	 int client_fd = 
-	 accept(server_fd, (struct sockaddr *)&client_addr, &client_addr_len);
+	 int client_fd = accept(server_fd, (struct sockaddr *)&client_addr, &client_addr_len);
+	 
 	 printf("Client connected\n");
+
+	 char buffer[1024];
+	 memset(buffer, 0, sizeof(buffer));
+
+	 while (1) {
+        // Receive data from the client
+        ssize_t bytes_received = recv(client_socket, buffer, sizeof(buffer), 0);
+        
+        if (bytes_received <= 0) {
+            // Handle error or client disconnection
+            break;
+        }
+
+        // Check if the received data is a PING command
+        if (strncmp(buffer, "PING\r\n", 6) == 0) {
+            // Respond with "+PONG\r\n"
+            const char* response = "+PONG\r\n";
+            send(client_socket, response, strlen(response), 0);
+        }
+
+        // Clear the buffer for the next iteration
+        memset(buffer, 0, sizeof(buffer));
+    }
 
 	 if (respond_client(client_fd) < 0) {
 		printf("Unable to respond to client properly \n");
 	 }
-	
+	close(client_socket);
 	close(server_fd);
 
 	return 0;
