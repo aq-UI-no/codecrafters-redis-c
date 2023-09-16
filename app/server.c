@@ -7,6 +7,18 @@
 #include <errno.h>
 #include <unistd.h>
 
+
+int respond_client(int connfd) {
+	char read_buffer[32] = {};
+	if (read(connfd, read_buffer, sizeof(read_buffer) - 1) < 0) {
+		printf("read() error %s... \n", strerror(errno));
+		return -1;
+	}char write_buffer[] = "+PONG\r\n";
+	write(connfd, write_buffer, strlen(write_buffer));
+
+	return 0;
+}
+
 int main() {
 	// Disable output buffering
 	setbuf(stdout, NULL);
@@ -53,7 +65,13 @@ int main() {
 	 client_addr_len = sizeof(client_addr);
 	
 	 accept(server_fd, (struct sockaddr *) &client_addr, &client_addr_len);
+	 int client_fd = 
+	 accept(server_fd, (struct sockaddr *)&cleint_addre, &client_addr_len);
 	 printf("Client connected\n");
+
+	 if (respond_client(client_fd) < 0) {
+		printf("Unable to respond to client properly \n")
+	 }
 	
 	close(server_fd);
 
