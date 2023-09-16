@@ -66,11 +66,11 @@ int main() {
 	
 	 accept(server_fd, (struct sockaddr *) &client_addr, &client_addr_len);
 	 int client_fd = 
-	 accept(server_fd, (struct sockaddr *)&cleint_addre, &client_addr_len);
+	 accept(server_fd, (struct sockaddr *)&client_addr, &client_addr_len);
 	 printf("Client connected\n");
 
 	 if (respond_client(client_fd) < 0) {
-		printf("Unable to respond to client properly \n")
+		printf("Unable to respond to client properly \n");
 	 }
 	
 	close(server_fd);
